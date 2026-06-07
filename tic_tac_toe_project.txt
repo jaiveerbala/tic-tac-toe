@@ -1,0 +1,557 @@
+import copy
+import random
+
+gsl = []
+
+# Sets up a list that holds the status of each cell in trinary
+
+def gslSetup():
+  
+  for x in range(3):
+  
+    liste = []
+  
+    for x in range(3):
+    
+      liste.append(0)
+    
+    gsl.append(liste)
+  
+gslSetup()
+
+# Helper function used to print the current grid based off of gsl
+
+def gslPrinter():
+  
+  for x in range(2):
+    
+    for y in range(3):
+      
+      if gsl[x][y] == 0:
+        
+        character = " "
+        
+      if gsl[x][y] == 1:
+        
+        character = "X"
+        
+      if gsl[x][y] == 2:
+        
+        character = "O"
+      
+      if y < 2:
+        
+        print(" " + character + " |", end = "")
+        
+      if y == 2:
+        
+        print(" " + character + " ")
+    
+    print("---+---+---")
+  
+  for i in range(3):
+    
+    if gsl[2][i] == 0:
+        
+        character = " "
+        
+    if gsl[2][i] == 1:
+        
+      character = "X"
+        
+    if gsl[2][i] == 2:
+        
+      character = "O"
+      
+    if i < 2:
+        
+      print(" " + character + " |", end = "")
+        
+    if i == 2:
+        
+      print(" " + character + " ")
+    
+# Update function to update grid after the player chooses where to place their character
+
+def gslUpdaterPlayer(characterRow, characterCol):
+
+  if gsl[characterRow][characterCol] != 2:
+  
+    gsl[characterRow][characterCol] = 1
+    
+# Update function to update grid for the computer
+
+def gslUpdaterComputer():
+  
+  # Code to win (first priority)
+  
+  if gsl[0][1] == 2 and gsl[1][1] == 2 and gsl[2][1] == 0:
+    
+    gsl[2][1] = 2
+  
+  elif gsl[1][1] == 2 and gsl[2][1] == 2 and gsl[0][1] == 0:
+    
+    gsl[0][1] = 2
+    
+  elif gsl[1][0] == 2 and gsl[1][1] == 2 and gsl[1][2] == 0:
+    
+    gsl[1][2] = 2
+    
+  elif gsl[1][1] == 2 and gsl[1][2] == 2 and gsl[1][0] == 0:
+    
+    gsl[1][0] = 2
+    
+  elif gsl[0][0] == 2 and gsl[0][1] == 2 and gsl[0][2] == 0:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[0][1] == 2 and gsl[0][2] == 2 and gsl[0][0] == 0:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[0][0] == 2 and gsl[1][0] == 2 and gsl[2][0] == 0:
+    
+    gsl[2][0] = 2
+  
+  elif gsl[1][0] == 2 and gsl[2][0] == 2 and gsl[0][0] == 0:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[2][0] == 2 and gsl[2][1] == 2 and gsl[2][2] == 0:
+    
+    gsl[2][2] = 2
+    
+  elif gsl[2][1] == 2 and gsl[2][2] == 2 and gsl[2][0] == 0:
+    
+    gsl[2][0] = 2
+    
+  elif gsl[0][2] == 2 and gsl[1][2] == 2 and gsl[2][2] == 0:
+    
+    gsl[2][2] = 2
+    
+  elif gsl[1][2] == 2 and gsl[2][2] == 2 and gsl[0][2] == 0:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[0][0] == 2 and gsl[1][1] == 2 and gsl[2][2] == 0:
+    
+    gsl[2][2] = 2
+    
+  elif gsl[1][1] == 2 and gsl[2][2] == 2 and gsl[0][0] == 0:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[2][0] == 2 and gsl[1][1] == 2 and gsl[0][2] == 0:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[1][1] == 2 and gsl[0][2] == 2 and gsl[2][0] == 0:
+    
+    gsl[2][0] = 2
+  
+  # Code to block the player (second priority)
+  
+  elif gsl[0][1] == 1 and gsl[1][1] == 1 and gsl[2][1] != 2:
+    
+    gsl[2][1] = 2
+  
+  elif gsl[1][1] == 1 and gsl[2][1] == 1 and gsl[0][1] != 2:
+    
+    gsl[0][1] = 2
+    
+  elif gsl[1][0] == 1 and gsl[1][1] == 1 and gsl[1][2] != 2:
+    
+    gsl[1][2] = 2
+    
+  elif gsl[1][1] == 1 and gsl[1][2] == 1 and gsl[1][0] != 2:
+    
+    gsl[1][0] = 2
+    
+  elif gsl[0][0] == 1 and gsl[0][1] == 1 and gsl[0][2] != 2:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[0][1] == 1 and gsl[0][2] == 1 and gsl[0][0] != 2:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[0][0] == 1 and gsl[1][0] == 1 and gsl[2][0] != 2:
+    
+    gsl[2][0] = 2
+  
+  elif gsl[1][0] == 1 and gsl[2][0] == 1 and gsl[0][0] != 2:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[2][0] == 1 and gsl[2][1] == 1 and gsl[2][2] != 2:
+    
+    gsl[2][2] = 2
+    
+  elif gsl[2][1] == 1 and gsl[2][2] == 1 and gsl[2][0] != 2:
+    
+    gsl[2][0] = 2
+    
+  elif gsl[0][2] == 1 and gsl[1][2] == 1 and gsl[2][2] != 2:
+    
+    gsl[2][2] = 2
+    
+  elif gsl[1][2] == 1 and gsl[2][2] == 1 and gsl[0][2] != 2:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[0][0] == 1 and gsl[1][1] == 1 and gsl[2][2] != 2:
+    
+    gsl[2][2] = 2
+    
+  elif gsl[1][1] == 1 and gsl[2][2] == 1 and gsl[0][0] != 2:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[2][0] == 1 and gsl[1][1] == 1 and gsl[0][2] != 2:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[1][1] == 1 and gsl[0][2] == 1 and gsl[2][0] != 2:
+    
+    gsl[2][0] = 2
+    
+  elif gsl[0][1] == 1 and gsl[2][1] == 1 and gsl[1][1] != 2:
+    
+    gsl[1][1] = 2
+    
+  elif gsl[1][0] == 1 and gsl[1][2] == 1 and gsl[1][1] != 2:
+    
+    gsl[1][1] = 2
+    
+  elif gsl[0][0] == 1 and gsl[0][2] == 1 and gsl[0][1] != 2:
+    
+    gsl[0][1] = 2
+    
+  elif gsl[0][0] == 1 and gsl[2][0] == 1 and gsl[1][0] != 2:
+    
+    gsl[1][0] = 2
+    
+  elif gsl[2][0] == 1 and gsl[2][2] == 1 and gsl[2][1] != 2:
+    
+    gsl[2][1] = 2
+    
+  elif gsl[0][2] == 1 and gsl[2][2] == 1 and gsl[1][2] != 2:
+    
+    gsl[1][2] = 2
+    
+  elif gsl[0][0] == 1 and gsl[2][2] == 1 and gsl[1][1] != 2:
+    
+    gsl[1][1] = 2
+    
+  elif gsl[2][0] == 1 and gsl[0][2] == 1 and gsl[1][1] != 2:
+    
+    gsl[1][1] = 2
+    
+  # Code to place a position if instant win or blocking is not possible (third priority)
+  
+  elif computerFork() == True:
+
+    pass
+  
+  elif playerMadeFork() == True:
+    
+    pass
+  
+  elif gsl[1][1] == 0:
+    
+    gsl[1][1] = 2
+    
+  elif gsl[0][0] == 0:
+    
+    gsl[0][0] = 2
+    
+  elif gsl[0][2] == 0:
+    
+    gsl[0][2] = 2
+    
+  elif gsl[2][0] == 0:
+    
+    gsl[2][0] = 2
+    
+  elif gsl[2][2] == 0:
+    
+    gsl[2][2] = 2
+    
+  else:
+    
+    zerocellcoor = []
+  
+    for x in range(3):
+    
+      for y in range(3):
+      
+        if gsl[x][y] == 0:
+        
+          currentcoor = []
+        
+          currentcoor.append(x)
+        
+          currentcoor.append(y)
+        
+          zerocellcoor.append(currentcoor)
+        
+    lenoflist = len(zerocellcoor) - 1
+  
+    randomnum = random.randint(0, lenoflist)
+  
+    coorone = zerocellcoor[randomnum][0]
+  
+    coortwo = zerocellcoor[randomnum][1]
+  
+    gsl[coorone][coortwo] = 2
+  
+  
+# Helper function for the AI to determine if there is a playable fork resulting in a win
+
+def computerFork():
+  
+  for x in range(3):
+    
+    for y in range(3):
+      
+      if gsl[x][y] == 0:
+        
+        gsl[x][y] = 2
+        
+        wincounter = 0
+        
+        for i in range(3):
+          
+          for j in range(3):
+            
+            if gsl[i][j] == 0:
+              
+              gsl[i][j] = 2
+              
+              if wonGame() == 2:
+                
+                wincounter += 1
+              
+              gsl[i][j] = 0
+        
+        if wincounter == 2:
+          
+          return True
+          
+        gsl[x][y] = 0
+  
+  return False
+  
+
+# Helper function for the AI to determine a player made fork early on
+
+
+def playerMadeFork():
+  
+  forkPosNum = 0
+  forkPosCoor = [0,0]
+  
+  for x in range(3):
+    
+    for y in range(3):
+      
+      if gsl[x][y] == 0:
+        
+        gsl[x][y] = 1
+        
+        wincounter = 0
+        
+        for i in range(3):
+          
+          for j in range(3):
+            
+            if gsl[i][j] == 0:
+              
+              gsl[i][j] = 1
+              
+              if wonGame() == 1:
+                
+                wincounter += 1
+              
+              gsl[i][j] = 0
+        
+        if wincounter == 2:
+          
+          forkPosCoor[0] = x
+          forkPosCoor[1] = y
+          forkPosNum += 1
+          
+        gsl[x][y] = 0
+        
+  if forkPosNum == 1:
+    
+    gsl[forkPosCoor[0]][forkPosCoor[1]] = 2
+    
+    return True
+    
+  elif forkPosNum == 2:
+    
+    if gsl[0][1] == 0:
+      
+      gsl[0][1] = 2
+      
+    elif gsl[1][0] == 0:
+      
+      gsl[1][0] = 2
+      
+    elif gsl[2][1] == 0:
+      
+      gsl[2][1] = 2
+      
+    elif gsl[1][2] == 0:
+      
+      gsl[1][2] = 2
+      
+    return True
+      
+  
+  return False
+
+
+# Function that checks whether someone has won the game
+
+def wonGame():
+  
+  if gsl[0][0] == 1 and gsl[1][0] == 1 and gsl[2][0] == 1:
+    
+    return 1
+    
+  elif gsl[0][1] == 1 and gsl[1][1] == 1 and gsl[2][1] == 1:
+    
+    return 1
+    
+  elif gsl[0][2] == 1 and gsl[1][2] == 1 and gsl[2][2] == 1:
+    
+    return 1
+
+  elif gsl[0][0] == 1 and gsl[0][1] == 1 and gsl[0][2] == 1:
+    
+    return 1
+    
+  elif gsl[1][0] == 1 and gsl[1][1] == 1 and gsl[1][2] == 1:
+    
+    return 1
+    
+  elif gsl[2][0] == 1 and gsl[2][1] == 1 and gsl[2][2] == 1:
+    
+    return 1
+    
+  elif gsl[2][0] == 1 and gsl[1][1] == 1 and gsl[0][2] == 1:
+    
+    return 1
+    
+  elif gsl[0][0] == 1 and gsl[1][1] == 1 and gsl[2][2] == 1:
+    
+    return 1
+    
+  elif gsl[0][0] == 2 and gsl[1][0] == 2 and gsl[2][0] == 2:
+    
+    return 2
+    
+  elif gsl[0][1] == 2 and gsl[1][1] == 2 and gsl[2][1] == 2:
+    
+    return 2
+    
+  elif gsl[0][2] == 2 and gsl[1][2] == 2 and gsl[2][2] == 2:
+    
+    return 2
+    
+  elif gsl[0][0] == 2 and gsl[0][1] == 2 and gsl[0][2] == 2:
+    
+    return 2
+    
+  elif gsl[1][0] == 2 and gsl[1][1] == 2 and gsl[1][2] == 2:
+    
+    return 2
+    
+  elif gsl[2][0] == 2 and gsl[2][1] == 2 and gsl[2][2] == 2:
+    
+    return 2
+    
+  elif gsl[2][0] == 2 and gsl[1][1] == 2 and gsl[0][2] == 2:
+    
+    return 2
+    
+  elif gsl[0][0] == 2 and gsl[1][1] == 2 and gsl[2][2] == 2:
+    
+    return 2
+    
+  elif gsl[0][0] != 0 and gsl[0][1] != 0 and gsl[0][2] != 0 and gsl[1][0] != 0 and gsl[1][1] != 0 and gsl[1][2] != 0 and gsl[2][0] != 0 and gsl[2][1] != 0 and gsl[2][2] != 0:
+    
+    return 3
+    
+
+        
+        
+    
+# Gameplay
+
+def ticTacToe():
+  
+  coinflip = random.randint(0, 1)
+  
+  if coinflip == 0:
+    
+    print("The coin flip shows that you (X) will go first!")
+    
+  elif coinflip == 1:
+    
+    print("The coin flip shows that the computer (O) will go first!")
+  
+  gslPrinter()
+    
+  while True:
+    
+    if coinflip == 0:
+      
+      print("")
+      
+      userrow = int(input("Pick a row to play: ")) - 1
+      usercol = int(input("Pick a column to play: ")) - 1
+      
+      print("")
+      
+      gslUpdaterPlayer(userrow, usercol)
+      
+    elif coinflip == 1:
+      
+      print("")
+      
+      print("The computer has made its move")
+      
+      print("")
+      
+      gslUpdaterComputer()
+    
+    gslPrinter()
+      
+    if wonGame() == 1:
+      
+      print("You won! Congratualtions!")
+      break
+    
+    elif wonGame() == 2:
+      
+      print("The computer won! Try again!")
+      break
+    
+    elif wonGame() == 3:
+      
+      print("Tie! Play again to decide the true champion!")
+      break
+    
+    if coinflip == 0:
+      
+      coinflip = 1
+      
+    elif coinflip == 1:
+      
+      coinflip = 0
+      
+ticTacToe()
+
